@@ -6,7 +6,7 @@ const Footer = () => {
         <footer className="footer footer-horizontal footer-center bg-neutral text-neutral-content p-10">
         <aside className='space-y-3'>
             <ProFastLogo/>
-            <div className='max-w-3xl mx-auto'>
+            <div className='max-w-2xl mx-auto'>
                 <p className="font-bold">
                     Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle. From personal packages to business shipments — we deliver on time, every time.
                 </p>
