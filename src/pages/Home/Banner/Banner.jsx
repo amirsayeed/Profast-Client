@@ -7,15 +7,15 @@ import bannerImg3 from '../../../assets/banner/banner3.png';
 const Banner = () => {
     return (
         <Carousel autoPlay={true} infiniteLoop={true} showThumbs={false} className='my-10'>
-                <div>
-                    <img src={bannerImg1} />
-                </div>
-                <div>
-                    <img src={bannerImg2} />
-                </div>
-                <div>
-                    <img src={bannerImg3} />
-                </div>
+            <div>
+                <img src={bannerImg1} />
+            </div>
+            <div>
+                <img src={bannerImg2} />
+            </div>
+            <div>
+                <img src={bannerImg3} />
+            </div>
         </Carousel>
     );
 };
