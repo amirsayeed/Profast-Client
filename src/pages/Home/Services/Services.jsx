@@ -49,7 +49,7 @@ const servicesData = [
 ];
 const Services = () => {
     return (
-        <section className="my-20 px-6 py-20 bg-[#03373D] rounded-4xl" id="services">
+        <section className="my-20 px-10 py-20 bg-[#03373D] rounded-4xl" id="services">
         <div className="text-center mb-10">
             <h2 className="text-3xl font-bold mb-4">Our Services</h2>
             <p className="max-w-2xl mx-auto">

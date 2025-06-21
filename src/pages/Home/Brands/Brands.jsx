@@ -13,7 +13,7 @@ const brandsLogo = [logo1,logo2,logo3,logo4,logo5,logo6,logo7];
 const Brands = () => {
   return (
     <section className="my-20 bg-base-100">
-      <h2 className="text-2xl font-bold text-primary text-center mb-6">We've helped thousands of sales teams</h2>
+      <h2 className="text-2xl font-bold text-primary text-center mb-6">We've helped thousands of sales teams</h2>
       <Marquee
         pauseOnHover
         speed={50}
