@@ -7,12 +7,16 @@ import {
 import { router } from './router/Routes';
 import AOS from 'aos';
 import 'aos/dist/aos.css'; 
+import AuthProvider from './provider/AuthProvider';
 AOS.init();
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-   <div className='max-w-7xl mx-auto font-urbanist'>
-      <RouterProvider router={router}/>
-   </div>
+   
+      <div className='max-w-7xl mx-auto font-urbanist'>
+        <AuthProvider>
+          <RouterProvider router={router}/>  
+        </AuthProvider>  
+      </div>
   </StrictMode>,
 )
