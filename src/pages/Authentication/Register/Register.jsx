@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router';
 import useAuth from '../../../hooks/useAuth';
 import { toast } from 'react-toastify';
+import SocialLogin from '../SocialLogin/SocialLogin';
 
 const Register = () => {
     const {signUp,setUser} = useAuth();
@@ -11,7 +12,7 @@ const Register = () => {
 
     const onSubmit = data =>{
         console.log(data);
-        
+
         signUp(data.email,data.password).then(result=>{
             console.log(result.user);
             setUser(result.user);
@@ -47,9 +48,10 @@ const Register = () => {
                             errors.password?.type === 'minLength' && <p className='text-red-500'>Password must be atleast 6 characters long</p>
                         }
                         <div className='mt-2'><p className="link link-hover">Already have an account? Please <span className='text-blue-400 underline'><Link to='/login'>Login</Link></span></p></div>
-                        <button type='submit' className="btn btn-neutral mt-4">Register</button>
+                        <button type='submit' className="btn btn-primary text-black mt-4">Register</button>
                     </fieldset>
                 </form>
+                <SocialLogin/>
             </div>
             </div>
     );
