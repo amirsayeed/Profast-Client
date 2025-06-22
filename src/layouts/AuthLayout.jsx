@@ -4,7 +4,7 @@ import authImg from '../assets/authImage.png'
 import ProFastLogo from '../pages/Shared/ProFastLogo/ProFastLogo';
 const AuthLayout = () => {
     return (
-        <div className='bg-base-200 p-12'>
+        <div className='bg-base-200 p-12 my-10'>
             <div>
                 <ProFastLogo/>
             </div>

@@ -1,13 +1,29 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import useAuth from '../../../hooks/useAuth';
+import { toast } from 'react-toastify';
 
 const Register = () => {
+    const {signUp,setUser} = useAuth();
     const {register, handleSubmit, formState: {errors}} = useForm();
+    const navigate = useNavigate();
 
     const onSubmit = data =>{
         console.log(data);
+        
+        signUp(data.email,data.password).then(result=>{
+            console.log(result.user);
+            setUser(result.user);
+            toast.success("Registration successful!");
+            navigate('/');
+        })
+        .catch(error=>{
+            console.log(error);
+            toast.error(error.message);
+        })
     }
+
 
     return (
             <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl p-6">
