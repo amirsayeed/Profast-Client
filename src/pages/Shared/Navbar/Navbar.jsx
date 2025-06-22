@@ -1,8 +1,21 @@
 import React from 'react';
-import { NavLink } from 'react-router';
+import { Link, NavLink } from 'react-router';
 import ProFastLogo from '../ProFastLogo/ProFastLogo';
+import useAuth from '../../../hooks/useAuth';
+import { toast } from 'react-toastify';
 
 const Navbar = () => {
+    const {user,logOut} = useAuth();
+
+    const handleSignOut = () =>{
+       logOut().then(()=>{
+            toast.success('Successfully logged out');
+        })
+        .catch(error=>{
+            toast.error(error.message);
+        })
+    }
+
     const navlinks = <>
                         <li><NavLink to='/'>Home</NavLink></li>
                         <li><NavLink to='/about'>About Us</NavLink></li>
@@ -27,8 +40,13 @@ const Navbar = () => {
                 {navlinks}  
             </ul>
         </div>
-        <div className="navbar-end">
-            <a className="btn">Button</a>
+        <div className="navbar-end gap-3">
+            {
+            user ? 
+            <button onClick={handleSignOut} className="btn btn-outline">Sign Out</button> :
+            <Link to='/login' className="btn btn-outline">Sign In</Link> 
+            }
+            <button className="btn btn-primary text-black">Be a Rider</button>
         </div>
         </div>
     );
