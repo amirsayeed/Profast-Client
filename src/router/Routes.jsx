@@ -6,6 +6,8 @@ import Home from "../pages/Home/Home/Home";
 import AuthLayout from '../layouts/AuthLayout'
 import Login from "../pages/Authentication/Login/Login";
 import Register from "../pages/Authentication/Register/Register";
+import Coverage from "../pages/Home/Coverage/Coverage";
+import Loading from '../pages/Shared/Loading/Loading'
 
 
 export const router = createBrowserRouter([
@@ -16,6 +18,12 @@ export const router = createBrowserRouter([
         {
             index: true,
             Component: Home
+        },
+        {
+            path: 'coverage',
+            loader: () => fetch('./coverageArea.json'),
+            hydrateFallbackElement: <Loading/>,
+            Component: Coverage
         }
     ]
   },
