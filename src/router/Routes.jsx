@@ -10,6 +10,7 @@ import Coverage from "../pages/Home/Coverage/Coverage";
 import Loading from '../pages/Shared/Loading/Loading'
 import PrivateRoute from "../provider/PrivateRoute";
 import SendParcel from "../pages/SendParcel/SendParcel";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 
 export const router = createBrowserRouter([
@@ -33,6 +34,15 @@ export const router = createBrowserRouter([
           loader: () => fetch('./coverageArea.json'),
           hydrateFallbackElement: <Loading/>
         }
+    ]
+  },
+  {
+    path:'/dashboard',
+    element: <PrivateRoute><DashboardLayout/></PrivateRoute>,
+    children:[
+      {
+        
+      }
     ]
   },
   {

@@ -1,11 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
-import { format } from "date-fns";
 import { useLoaderData } from "react-router";
 import Swal from "sweetalert2";
+import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+
+
+const generateTrackingID = () => {
+    const date = new Date();
+    const datePart = date.toISOString().split("T")[0].replace(/-/g, "");
+    const rand = Math.random().toString(36).substring(2, 7).toUpperCase();
+    return `PCL-${datePart}-${rand}`;
+};
 
 
 const SendParcel = () => {
+  const {user} = useAuth();
+  const axiosSecure = useAxiosSecure();
+  
   const {
     register,
     handleSubmit,
@@ -13,7 +25,8 @@ const SendParcel = () => {
     formState: { errors },
   } = useForm();
 
-  const [submittedData, setSubmittedData] = useState(null);
+
+  // const [submittedData, setSubmittedData] = useState(null);
 
   const serviceCenters = useLoaderData();
 
@@ -32,40 +45,103 @@ const SendParcel = () => {
   const filteredSenderCenters = getCentersByRegion(senderRegion);
   const filteredReceiverCenters = getCentersByRegion(receiverRegion);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
   const { type, weight = 0, senderServiceCenter, receiverServiceCenter } = data;
 
   const isSameCenter = senderServiceCenter === receiverServiceCenter;
   const weightValue = parseFloat(weight);
-
   let totalCost = 0;
+  let breakdown = "";
 
   if (type === "document") {
     totalCost = isSameCenter ? 60 : 80;
+    breakdown = `
+      <strong>Parcel Type:</strong> Document<br/>
+      <strong>Delivery Type:</strong> ${isSameCenter ? "Within City (Same Center)" : "Outside City (Different Center)"}<br/>
+      <strong>Flat Rate:</strong> ৳${totalCost}<br/>
+      <hr class="my-2"/>
+      <strong>Total Cost:</strong> ৳${totalCost}
+    `;
   } else {
-    // Non-document
-    if (weightValue <= 3) {
-      totalCost = isSameCenter ? 110 : 150;
-    } else {
+    const baseCost = isSameCenter ? 110 : 150;
+    let extraCost = 0;
+    let surcharge = 0;
+
+    if (weightValue > 3) {
       const extraKg = weightValue - 3;
-      const extraCost = extraKg * 40;
-      totalCost = isSameCenter
-        ? 110 + extraCost
-        : 150 + extraCost + 40; // extra 40 for outside district
+      extraCost = extraKg * 40;
+      if (!isSameCenter) {
+        surcharge = 40;
+      }
     }
+
+    totalCost = baseCost + extraCost + surcharge;
+
+    breakdown = `
+    <strong>Parcel Type:</strong> Non-Document<br/>
+    <strong>Weight:</strong> ${weightValue}kg<br/>
+    <strong>Delivery Type:</strong> ${isSameCenter ? "Within City (Same Center)" : "Outside City (Different Center)"}<br/>
+    <hr class="my-2"/>
+    <strong>Breakdown:</strong><br/>
+    Base Cost (up to 3kg): ৳${baseCost}<br/>
+    ${extraCost > 0 ? `Extra Weight Charge: (${weightValue - 3}kg × ৳40) = ৳${extraCost}<br/>` : ""}
+    ${surcharge > 0 ? `Outside City Surcharge: ৳${surcharge}<br/>` : ""}
+    <hr class="my-2"/>
+    <strong style="font-size: 18px;">Total Cost:</strong> 
+    <span style="font-size: 18px; color: green;">৳${totalCost}</span>
+  `;
   }
 
-  setSubmittedData({ ...data, totalCost });
-  console.log(submittedData);
-    Swal.fire({
-    title: 'Estimated Cost',
-    text: `Estimated Delivery Cost: ৳${totalCost}`,
-    icon: 'success',
-    confirmButtonText: 'Okay',
-    confirmButtonColor: '#6366f1', // Optional: customize color
+  const result = await Swal.fire({
+    title: "Review Parcel Pricing",
+    html: `
+      <div class="text-left leading-6">
+        ${breakdown}
+      </div>
+    `,
+    icon: "info",
+    showCancelButton: false,
+    showDenyButton: true,
+    confirmButtonText: "Proceed to Payment",
+    denyButtonText: "Edit Info",
+    confirmButtonColor: "#10b981", // green
+    denyButtonColor: "#3b82f6",    
   });
 
+  if (result.isConfirmed) {
+    const parcelData = {
+      ...data,
+      totalCost,
+      created_by: user.email,
+      payment_status: 'unpaid',
+      delivery_status: 'not_collected',
+      creation_date: new Date().toISOString(),
+      trackingId: generateTrackingID()
+    };
+
+    console.log("Proceeding with:", parcelData);
+
+    //save data to server
+    axiosSecure.post('/parcels', parcelData)
+    .then(res=>{
+      console.log(res.data)
+      if(res?.data.insertedId){
+        Swal.fire({
+          title: "Success!",
+          text: "Parcel info submitted. Redirecting to payment...",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+      }
+    })
+    .catch(error=>{
+      console.log(error)
+    })
+
+  }
 };
+
+
 
 
   // const confirmSubmission = () => {
