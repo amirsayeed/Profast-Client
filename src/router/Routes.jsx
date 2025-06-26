@@ -11,6 +11,7 @@ import Loading from '../pages/Shared/Loading/Loading'
 import PrivateRoute from "../provider/PrivateRoute";
 import SendParcel from "../pages/SendParcel/SendParcel";
 import DashboardLayout from "../layouts/DashboardLayout";
+import MyParcels from "../pages/Dashboard/MyParcels/MyParcels";
 
 
 export const router = createBrowserRouter([
@@ -41,7 +42,8 @@ export const router = createBrowserRouter([
     element: <PrivateRoute><DashboardLayout/></PrivateRoute>,
     children:[
       {
-        
+        path: 'myParcels',
+        Component: MyParcels
       }
     ]
   },
