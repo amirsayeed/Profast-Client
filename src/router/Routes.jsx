@@ -8,6 +8,8 @@ import Login from "../pages/Authentication/Login/Login";
 import Register from "../pages/Authentication/Register/Register";
 import Coverage from "../pages/Home/Coverage/Coverage";
 import Loading from '../pages/Shared/Loading/Loading'
+import PrivateRoute from "../provider/PrivateRoute";
+import SendParcel from "../pages/SendParcel/SendParcel";
 
 
 export const router = createBrowserRouter([
@@ -24,6 +26,12 @@ export const router = createBrowserRouter([
             loader: () => fetch('./coverageArea.json'),
             hydrateFallbackElement: <Loading/>,
             Component: Coverage
+        },
+        {
+          path: 'sendParcel',
+          element: <PrivateRoute><SendParcel/></PrivateRoute>,
+          loader: () => fetch('./coverageArea.json'),
+          hydrateFallbackElement: <Loading/>
         }
     ]
   },
