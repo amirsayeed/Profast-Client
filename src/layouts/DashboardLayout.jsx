@@ -1,7 +1,10 @@
 import React from 'react';
-import { Link, Outlet } from 'react-router';
-
+import { Link, Outlet, useLocation } from 'react-router';
+import ProFastLogo from '../pages/Shared/ProFastLogo/ProFastLogo'
 const DashboardLayout = () => {
+    const location = useLocation();
+    const isDashboardRoot = location.pathname === '/dashboard';
+
     return (
         <div className="drawer lg:drawer-open">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -29,13 +32,23 @@ const DashboardLayout = () => {
             
             </div>
             {/* Page content here */}
+            {/* Main content */}
+            {isDashboardRoot && (
+            <div className="p-4">
+                <h2 className="text-2xl font-bold">Welcome to Your Dashboard</h2>
+                <p className="text-gray-500 mt-2">
+                Use the sidebar to manage parcels, payments, and more.
+                </p>
+            </div>
+            )}
             <Outlet/>
         </div>
         <div className="drawer-side">
             <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
-            <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
+            <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4 gap-2">
             {/* Sidebar content here */}
-            <li><Link to='/dashboard'>Home</Link></li>
+            <ProFastLogo/>
+            <li><Link to='/dashboard'>My Dashboard</Link></li>
             <li><Link to='/dashboard/myParcels'>My Parcels</Link></li>
             </ul>
         </div>

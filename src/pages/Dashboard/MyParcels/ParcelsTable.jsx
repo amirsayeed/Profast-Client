@@ -22,7 +22,7 @@ const ParcelsTable = ({parcels,onView,onPay,onDelete}) => {
             <tr key={parcel._id}>
               <td>{index + 1}</td>
               <td className="capitalize">{parcel.type}</td>
-              <td>{(parcel.creation_date)}</td>
+              <td>{new Date(parcel.creation_date).toLocaleString()}</td>
               <td>৳{parcel.totalCost}</td>
               <td>
                 <span
@@ -51,7 +51,7 @@ const ParcelsTable = ({parcels,onView,onPay,onDelete}) => {
                 </button>
                 <button
                   className="btn btn-sm btn-error"
-                  onClick={() => onDelete(parcel)}
+                  onClick={() => onDelete(parcel._id)}
                 >
                   Delete
                 </button>
