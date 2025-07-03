@@ -4,11 +4,14 @@ import useAuth from '../../../hooks/useAuth';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import ParcelsTable from './ParcelsTable';
 import Swal from 'sweetalert2';
+import Loading from '../../Shared/Loading/Loading';
+import { useNavigate } from 'react-router';
 
 const MyParcels = () => {
     const {user} = useAuth();
     const axiosSecure = useAxiosSecure();
-    const {data: parcels=[],refetch} = useQuery({
+    const navigate = useNavigate();
+    const {data: parcels=[],isPending,refetch} = useQuery({
         queryKey: ['my-parcels', user.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/parcels?email=${user.email}`)
@@ -16,6 +19,10 @@ const MyParcels = () => {
         }
     });
 
+    if(isPending){
+        return <Loading/>;
+    }
+    
     console.log(parcels);
 
      // View Parcel
@@ -24,8 +31,9 @@ const MyParcels = () => {
   };
 
   // Pay for Parcel
-  const handlePay = (parcel) => {
-    console.log(parcel)
+  const handlePay = (id) => {
+    console.log('Proceed to payment', id);
+    navigate(`/dashboard/payment/${id}`);
   };
 
   // Delete Parcel

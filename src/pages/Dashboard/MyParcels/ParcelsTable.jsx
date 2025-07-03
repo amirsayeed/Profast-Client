@@ -44,7 +44,7 @@ const ParcelsTable = ({parcels,onView,onPay,onDelete}) => {
                 </button>
                 <button
                   className="btn btn-sm btn-success"
-                  onClick={() => onPay(parcel)}
+                  onClick={() => onPay(parcel._id)}
                   disabled={parcel.payment_status === 'paid'}
                 >
                   Pay
