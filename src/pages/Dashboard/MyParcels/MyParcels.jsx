@@ -23,7 +23,7 @@ const MyParcels = () => {
         return <Loading/>;
     }
     
-    console.log(parcels);
+    //console.log(parcels);
 
      // View Parcel
   const handleView = (parcel) => {

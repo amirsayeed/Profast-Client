@@ -1,14 +1,16 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import Loading from '../../Shared/Loading/Loading';
 import useAuth from '../../../hooks/useAuth';
+import Swal from 'sweetalert2';
 
 const PaymentForm = () => {
     const stripe = useStripe();
     const elements = useElements();
+    const navigate = useNavigate();
     
     const [error, setError] = useState('');
     const {parcelId} = useParams();
@@ -63,6 +65,7 @@ const PaymentForm = () => {
             amountInCents,
             parcelId
         })
+
         const clientSecret = res.data.clientSecret;
 
         // confirm payment
@@ -75,12 +78,36 @@ const PaymentForm = () => {
                 }
             }
         });
-         if (result.error) {
-            console.log(result.error.message);
-            } else {
+
+        if (result.error) {
+            setError(result.error.message);
+        } else {
+            setError('');
             if (result.paymentIntent.status === 'succeeded') {
                 console.log('Payment successful!');
                 console.log(result);
+                const transactionId = result.paymentIntent.id;
+
+                const paymentData = {
+                    parcelId,
+                    email: user.email,
+                    amount,
+                    transactionId: transactionId,
+                    paymentMethod: result.paymentIntent.payment_method_types
+                }
+
+                const paymentRes = await axiosSecure.post('/payments', paymentData);
+                if(paymentRes.data.insertedId){
+                     await Swal.fire({
+                            icon: 'success',
+                            title: 'Payment Successful!',
+                            html: `<strong>Transaction ID:</strong> <code>${transactionId}</code>`,
+                            confirmButtonText: 'Go to My Parcels',
+                        });
+
+                        // ✅ Redirect to /myParcels
+                        navigate('/dashboard/myParcels');
+                }
              }
             }
 
