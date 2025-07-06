@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link, Outlet, useLocation } from 'react-router';
 import ProFastLogo from '../pages/Shared/ProFastLogo/ProFastLogo'
+import { FaBoxOpen, FaHome, FaUserEdit } from 'react-icons/fa';
+import { HiReceiptRefund } from "react-icons/hi";
+import { BiPackage } from "react-icons/bi";
 const DashboardLayout = () => {
     const location = useLocation();
     const isDashboardRoot = location.pathname === '/dashboard';
@@ -48,8 +51,21 @@ const DashboardLayout = () => {
             <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4 gap-2">
             {/* Sidebar content here */}
             <ProFastLogo/>
-            <li><Link to='/dashboard'>My Dashboard</Link></li>
-            <li><Link to='/dashboard/myParcels'>My Parcels</Link></li>
+                <li>
+                    <Link to='/dashboard'><FaHome className="inline mr-2" /> Home</Link>
+                </li>
+                <li>
+                    <Link to='/dashboard/myParcels'><FaBoxOpen className="inline mr-2" /> My Parcels</Link>
+                </li>
+                <li>
+                    <Link to='/dashboard/paymentHistory'><HiReceiptRefund className="inline mr-2" /> Payment History</Link>
+                </li>
+                <li>
+                    <Link to='/dashboard/track'><BiPackage className="inline mr-2" />Track a Package</Link>
+                </li>
+                <li>
+                    <Link to='/dashboard/profile'><FaUserEdit className="inline mr-2" /> Update Profile</Link>
+                </li>
             </ul>
         </div>
         </div>
