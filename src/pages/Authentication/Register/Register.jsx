@@ -1,28 +1,59 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router';
 import useAuth from '../../../hooks/useAuth';
 import { toast } from 'react-toastify';
 import SocialLogin from '../SocialLogin/SocialLogin';
+import axios from 'axios';
 
 const Register = () => {
-    const {signUp,setUser} = useAuth();
+    const {signUp,setUser,updateUser} = useAuth();
     const {register, handleSubmit, formState: {errors}} = useForm();
     const navigate = useNavigate();
+    const [profilePic,setProfilePic] = useState('');
 
     const onSubmit = data =>{
         console.log(data);
 
         signUp(data.email,data.password).then(result=>{
-            console.log(result.user);
-            setUser(result.user);
-            toast.success("Registration successful!");
-            navigate('/');
+            const user = result.user;
+            
+            const userProfile = {
+                displayName: data.name,
+                photoURL: profilePic
+            }
+            updateUser(userProfile)
+            .then(()=>{
+                console.log('profile name and pic updated');
+
+                const updatedUser = {
+                    ...user,
+                    displayName: data.name,
+                    photoURL: profilePic
+                }
+
+                setUser(updatedUser);
+                toast.success("Registration successful!");
+                navigate('/');
+            })
+            .catch(error=>{
+                console.log(error);
+            })
         })
         .catch(error=>{
             console.log(error);
             toast.error(error.message);
         })
+    }
+
+    const handleImgUpload = async(e) =>{
+        const image = e.target.files[0];
+        console.log(image);
+        const formData = new FormData();
+        formData.append('image',image);
+    
+        const res = await axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_upload_key}`,formData);
+        setProfilePic(res.data.data.url);
     }
 
 
@@ -32,6 +63,16 @@ const Register = () => {
             <div className="space-y-3">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <fieldset className="fieldset">
+                        <label className="label">Name</label>
+                        <input type="name" {...register("name", {required: true})} className="input" placeholder="Your name" />
+                        {
+                            errors.name?.type === 'required' && <p className='text-red-500'>Name is required</p>
+                        }
+                        <label className="label">Image</label>
+                        <input type="file"
+                        onChange={handleImgUpload}
+                        className="input" placeholder="Your profile picture" />
+                        
                         <label className="label">Email</label>
                         <input type="email" {...register("email", {required: true})} className="input" placeholder="Email" />
                         {
