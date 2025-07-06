@@ -5,19 +5,34 @@ import useAuth from '../../../hooks/useAuth';
 import { toast } from 'react-toastify';
 import SocialLogin from '../SocialLogin/SocialLogin';
 import axios from 'axios';
+import useAxios from '../../../hooks/useAxios';
 
 const Register = () => {
     const {signUp,setUser,updateUser} = useAuth();
     const {register, handleSubmit, formState: {errors}} = useForm();
+    const axiosInstance = useAxios();
     const navigate = useNavigate();
     const [profilePic,setProfilePic] = useState('');
 
     const onSubmit = data =>{
         console.log(data);
 
-        signUp(data.email,data.password).then(result=>{
+        signUp(data.email,data.password).then(async(result)=>{
             const user = result.user;
             
+            // update in database        
+            const userInfo = {
+                email: data.email,
+                role: 'user',
+                created_at: new Date().toISOString(),
+                last_log_in: new Date().toISOString()
+            }
+            
+            const userRes = await axiosInstance.post('/users',userInfo);
+            console.log(userRes.data);
+
+
+            // update in firebase
             const userProfile = {
                 displayName: data.name,
                 photoURL: profilePic
