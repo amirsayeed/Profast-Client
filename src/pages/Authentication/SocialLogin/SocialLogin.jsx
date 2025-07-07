@@ -2,15 +2,27 @@ import React from 'react';
 import useAuth from '../../../hooks/useAuth';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
+import useAxios from '../../../hooks/useAxios';
 
 const SocialLogin = ({location}) => {
     //console.log(location)
     const {googleSignIn,setUser} = useAuth();
     const navigate = useNavigate();
+    const axiosInstance = useAxios();
     const handleGoogleLogin = () =>{
-        googleSignIn().then(result=>{
-            setUser(result.user);
-            toast.success("Registration successful!");
+        googleSignIn().then(async(result)=>{
+            const user = result.user;
+            const userInfo = {
+                email: user.email,
+                role: 'user',
+                created_at: new Date().toISOString(),
+                last_log_in: new Date().toISOString()
+            }
+            const res = await axiosInstance.post(`/users`,userInfo);
+            console.log(res.data);
+
+            setUser(user);
+            toast.success("Login successful!");
             navigate(`${location?.state ? location.state : '/'}`);
         })
         .catch(error=>{
