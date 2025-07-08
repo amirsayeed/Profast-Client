@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Outlet, useLocation } from 'react-router';
 import ProFastLogo from '../pages/Shared/ProFastLogo/ProFastLogo'
-import { FaBoxOpen, FaHome, FaUserEdit } from 'react-icons/fa';
+import { FaBoxOpen, FaHome, FaMotorcycle, FaUserClock, FaUserEdit } from 'react-icons/fa';
 import { HiReceiptRefund } from "react-icons/hi";
 import { BiPackage } from "react-icons/bi";
 const DashboardLayout = () => {
@@ -65,6 +65,16 @@ const DashboardLayout = () => {
                 </li>
                 <li>
                     <Link to='/dashboard/profile'><FaUserEdit className="inline mr-2" /> Update Profile</Link>
+                </li>
+                <li>
+                    <Link to='/dashboard/activeRiders'>
+                        <FaMotorcycle className="inline mr-2" /> Active Riders
+                    </Link>
+                </li>
+                <li>
+                    <Link to='/dashboard/pendingRiders'>
+                        <FaUserClock className="inline mr-2" /> Pending Riders
+                    </Link>
                 </li>
             </ul>
         </div>
