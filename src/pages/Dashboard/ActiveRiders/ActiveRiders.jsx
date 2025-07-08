@@ -95,8 +95,8 @@ const ActiveRiders = () => {
                   <td>{idx + 1}</td>
                   <td>{rider.name}</td>
                   <td>{rider.email}</td>
-                  <td>{rider.phone || 'N/A'}</td>
-                  <td>{rider.district || 'N/A'}</td>
+                  <td>{rider.phoneNumber}</td>
+                  <td>{rider.district}</td>
                   <td>{new Date(rider.appliedAt).toLocaleDateString()}</td>
                   <td>
                     <button
