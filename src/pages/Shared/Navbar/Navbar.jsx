@@ -25,6 +25,7 @@ const Navbar = () => {
                             <li><NavLink to='/dashboard'>Dashboard</NavLink></li>
                             </>
                         }
+                        <li><NavLink to='/beARider'>Be A Rider</NavLink></li>
                      </>
     return (
         <div className="navbar bg-white text-black shadow-md rounded-3xl">
@@ -35,7 +36,7 @@ const Navbar = () => {
             </div>
             <ul
                 tabIndex={0}
-                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow text-lg font-medium">
+                className="menu menu-sm dropdown-content bg-base-100 text-primary rounded-box z-1 mt-3 w-52 p-2 shadow text-lg font-medium">
                 {navlinks}
             </ul>
             </div>
