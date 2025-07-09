@@ -22,7 +22,7 @@ const PendingRiders = () => {
   }
 
   // Approve or Cancel action
-  const handleStatusUpdate = async (id, newStatus) => {
+  const handleStatusUpdate = async (id, newStatus,email) => {
   const action = newStatus === 'active' ? 'approve' : 'cancel';
 
   const result = await Swal.fire({
@@ -37,7 +37,7 @@ const PendingRiders = () => {
 
   if (result.isConfirmed) {
     try {
-      const res = await axiosSecure.patch(`/riders/${id}`, { status: newStatus });
+      const res = await axiosSecure.patch(`/riders/${id}`, { status: newStatus, email });
 
       if (res.data.modifiedCount > 0) {
         setSelectedRider(null);
@@ -98,13 +98,13 @@ const PendingRiders = () => {
                   </button>
                   <button
                     className="btn btn-sm btn-success"
-                    onClick={() => handleStatusUpdate(rider._id, 'active')}
+                    onClick={() => handleStatusUpdate(rider._id, 'active',rider.email)}
                   >
                     <FaCheck />
                   </button>
                   <button
                     className="btn btn-sm btn-error"
-                    onClick={() => handleStatusUpdate(rider._id, 'cancelled')}
+                    onClick={() => handleStatusUpdate(rider._id, 'cancelled',rider.email)}
                   >
                     <FaTimes />
                   </button>
