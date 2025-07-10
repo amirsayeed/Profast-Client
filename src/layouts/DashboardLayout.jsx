@@ -66,9 +66,9 @@ const DashboardLayout = () => {
                 <li>
                     <NavLink to='/dashboard/track'><BiPackage className="inline mr-2" />Track a Package</NavLink>
                 </li>
-                <li>
+                {/* <li>
                     <NavLink to='/dashboard/profile'><FaUserEdit className="inline mr-2" /> Update Profile</NavLink>
-                </li>
+                </li> */}
                 {!roleLoading && role === 'admin' &&
                 <>
                 <li>
