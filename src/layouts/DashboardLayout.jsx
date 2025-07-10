@@ -4,7 +4,10 @@ import ProFastLogo from '../pages/Shared/ProFastLogo/ProFastLogo'
 import { FaBoxOpen, FaHome, FaMotorcycle, FaUserClock, FaUserEdit, FaUserShield } from 'react-icons/fa';
 import { HiReceiptRefund } from "react-icons/hi";
 import { BiPackage } from "react-icons/bi";
+import useUserRole from '../hooks/useUserRole';
 const DashboardLayout = () => {
+    const {role,roleLoading} = useUserRole();
+    console.log(role);
     const location = useLocation();
     const isDashboardRoot = location.pathname === '/dashboard';
 
@@ -66,6 +69,8 @@ const DashboardLayout = () => {
                 <li>
                     <NavLink to='/dashboard/profile'><FaUserEdit className="inline mr-2" /> Update Profile</NavLink>
                 </li>
+                {!roleLoading && role === 'admin' &&
+                <>
                 <li>
                     <NavLink to='/dashboard/activeRiders'>
                         <FaMotorcycle className="inline mr-2" /> Active Riders
@@ -81,6 +86,8 @@ const DashboardLayout = () => {
                         <FaUserShield className="inline mr-2" /> Make Admin
                     </NavLink>
                 </li>
+                </> 
+            }
 
             </ul>
         </div>
