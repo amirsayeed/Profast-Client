@@ -1,13 +1,13 @@
 import React from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router';
 import ProFastLogo from '../pages/Shared/ProFastLogo/ProFastLogo'
-import { FaBoxOpen, FaHome, FaMotorcycle, FaUserClock, FaUserEdit, FaUserShield } from 'react-icons/fa';
+import { FaBoxOpen, FaHome, FaMotorcycle, FaUserClock, FaUserEdit, FaUserPlus, FaUserShield } from 'react-icons/fa';
 import { HiReceiptRefund } from "react-icons/hi";
 import { BiPackage } from "react-icons/bi";
 import useUserRole from '../hooks/useUserRole';
 const DashboardLayout = () => {
     const {role,roleLoading} = useUserRole();
-    console.log(role);
+    //console.log(role);
     const location = useLocation();
     const isDashboardRoot = location.pathname === '/dashboard';
 
@@ -57,6 +57,7 @@ const DashboardLayout = () => {
                 <li>
                     <NavLink to='/dashboard'><FaHome className="inline mr-2" /> Home</NavLink>
                 </li>
+
                 <li>
                     <NavLink to='/dashboard/myParcels'><FaBoxOpen className="inline mr-2" /> My Parcels</NavLink>
                 </li>
@@ -71,6 +72,11 @@ const DashboardLayout = () => {
                 </li> */}
                 {!roleLoading && role === 'admin' &&
                 <>
+                <li>
+                    <NavLink to="/dashboard/assignRider">
+                        <FaUserPlus className="inline mr-2" /> Assign Rider
+                    </NavLink>
+                </li>
                 <li>
                     <NavLink to='/dashboard/activeRiders'>
                         <FaMotorcycle className="inline mr-2" /> Active Riders
